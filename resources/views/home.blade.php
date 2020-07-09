@@ -31,12 +31,12 @@
                     @foreach ($questions as $question)
 
                     <h5>{{$question->title}}
-                        <a href="/pertanyaan/{{$question->id}}/edit" class="badge badge-pill badge-primary"><i
+                        <a href="/pertanyaan/{{$question->id}}/edit" class="btn btn-sm btn-primary"><i
                                 class="far fa-edit"></i></a>
                         <form action="/pertanyaan/{{$question->id}}" method="POST" class="d-inline">
                             @method('delete')
                             @csrf
-                            <button class="badge badge-pill badge-danger"><i class="far fa-trash-alt"></i></button>
+                            <button class="btn btn-sm btn-danger"><i class="far fa-trash-alt"></i></button>
                         </form>
                     </h5>
 
@@ -47,31 +47,32 @@
                     @endif
 
                     {{-- daftar komentar pertanyaan --}}
-                    <a data-toggle="collapse" data-target="#collapse_komentar_pertanyaan{{$question->id}}" aria-expanded="false"
-                        aria-controls="collapse_komentar_pertanyaan{{$question->id}}"><i class="btn btn-warning far fa-comment"></i></a>
+                    <a data-toggle="collapse" data-target="#collapse_komentar_pertanyaan{{$question->id}}"
+                        aria-expanded="false" aria-controls="collapse_komentar_pertanyaan{{$question->id}}"><i
+                            class="btn btn-warning far fa-comment"></i></a>
 
-                        <div class="collapse" id="collapse_komentar_pertanyaan{{$question->id}}">
+                    <div class="collapse" id="collapse_komentar_pertanyaan{{$question->id}}">
 
-                            {{-- form --}}
-                            <form method="POST" action="/answer">
-                                @csrf
-                                <div class="form-group">
-                                    <label for="content">Isi Komentar</label>
-                                    <input type="text" name="question_id" value="{{$question->id}}" hidden>
-                                    <input type="text" name="user_id" value="{{$user->id}}" hidden>
-                                    <input type="text" class="form-control  @error('content') is-invalid @enderror "
-                                        id="content" name="content" placeholder="Masukan komentar dari pertanyaan!">
+                        {{-- form --}}
+                        <form method="POST" action="/answer">
+                            @csrf
+                            <div class="form-group">
+                                <label for="content">Isi Komentar</label>
+                                <input type="text" name="question_id" value="{{$question->id}}" hidden>
+                                <input type="text" name="user_id" value="{{$user->id}}" hidden>
+                                <input type="text" class="form-control  @error('content') is-invalid @enderror "
+                                    id="content" name="content" placeholder="Masukan komentar dari pertanyaan!">
 
-                                    @error('content')
-                                    <div class="invalid-feedback">
-                                        {{$message}}
-                                    </div>
-                                    @enderror
-
+                                @error('content')
+                                <div class="invalid-feedback">
+                                    {{$message}}
                                 </div>
-                                <button type="submit" class="btn btn-primary btn-sm">Komentari Pertanyaan!</button>
-                            </form>
-                        </div>
+                                @enderror
+
+                            </div>
+                            <button type="submit" class="btn btn-primary btn-sm">Komentari Pertanyaan!</button>
+                        </form>
+                    </div>
 
 
                     @endforeach
@@ -84,20 +85,44 @@
                     <p class="text-muted text-right blockquote-footer">{{$answer->content}} - at
                         {{$question->created_at->format('D M Y')}} By {{Auth::user()->name}}</p>
 
-                    <a href="/jawaban/{{$answer->id}}/edit" class="badge badge-pill badge-primary"><i
+                    <a href="/jawaban/{{$answer->id}}/edit" class="btn btn-sm btn-primary"><i
                             class="far fa-edit"></i></a>
                     <form action="/jawaban/{{$answer->id}}" method="POST" class="d-inline">
                         <span>
                             @method('delete')
                             @csrf
-                            <button class="badge badge-pill badge-danger text-right"><i
+                            <button class="btn btn-sm btn-danger text-right"><i
                                     class="far fa-trash-alt"></i></button>
                         </span>
                     </form>
 
                     {{-- daftar komentar jawaban --}}
-                    <p><i class="btn btn-warning far fa-comment"></i></p>
+                    <a data-toggle="collapse" data-target="#collapse_komentar_jawaban{{$question->id}}"
+                        aria-expanded="false" aria-controls="collapse_komentar_jawaban{{$question->id}}"><i
+                            class="btn btn-warning far fa-comment"></i></a>
 
+                    <div class="collapse" id="collapse_komentar_jawaban{{$question->id}}">
+
+                        {{-- form --}}
+                        <form method="POST" action="/answer">
+                            @csrf
+                            <div class="form-group">
+                                <label for="content">Isi Komentar</label>
+                                <input type="text" name="question_id" value="{{$question->id}}" hidden>
+                                <input type="text" name="user_id" value="{{$user->id}}" hidden>
+                                <input type="text" class="form-control  @error('content') is-invalid @enderror "
+                                    id="content" name="content" placeholder="Masukan komentar dari Jawaban!">
+
+                                @error('content')
+                                <div class="invalid-feedback">
+                                    {{$message}}
+                                </div>
+                                @enderror
+
+                            </div>
+                            <button type="submit" class="btn btn-primary btn-sm">Komentari Jawaban!</button>
+                        </form>
+                    </div>
                     <hr>
 
                     @endif
