@@ -29,7 +29,7 @@
     <!-- Styles -->
     <style>
         html, body {
-            background-color: #fff;
+            background-color: rgba(238,238,238,1);
             color: #636b6f;
             font-family: 'Nunito', sans-serif;
             font-weight: 200;

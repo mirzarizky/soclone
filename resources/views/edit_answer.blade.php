@@ -1,4 +1,4 @@
-@extends('template.main')
+@extends('layouts.app')
 @section('title', 'Larahub | Edit Jawaban')
 @section('content')
 <div class="flex-center position-ref full-height">

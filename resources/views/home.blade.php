@@ -45,11 +45,11 @@
                     @endif
                     @endforeach
 
-                    <h6 class="text-right">- Komentar -</h6>
+                    <h6 class="text-right">- Jawaban -</h6>
 
                     @foreach ($answers as $answer)
-                    @if ($answer->id_question == $question->id)
-                    <p class="text-muted text-right blockquote-footer">{{$answer->isi}} - at {{$question->created_at->format('D M Y')}}</p>
+                    @if ($answer->question_id == $question->id)
+                <p class="text-muted text-right blockquote-footer">{{$answer->content}} - at {{$question->created_at->format('D M Y')}} By {{Auth::user()->name}}</p>
                     <a href="/jawaban/{{$answer->id}}/edit" class="badge badge-pill badge-primary"><i
                         class="far fa-edit"></i></a>
                     <form action="/jawaban/{{$answer->id}}" method="POST" class="d-inline">
@@ -65,25 +65,26 @@
                     @endif
                     @endforeach
 
-                    <div class="text-right">
+                    <div class="text-right mt-3">
                         <button class="btn btn-success btn-sm" type="button" data-toggle="collapse"
                             data-target="#collapse{{$question->id}}" aria-expanded="false"
                             aria-controls="collapse{{$question->id}}">
-                            Tanggapi Pertanyaan!
+                            Jawab Pertanyaan!
                         </button>
                         </p>
                         <div class="collapse" id="collapse{{$question->id}}">
 
                             {{-- form --}}
-                            <form method="POST" action="/question">
+                            <form method="POST" action="/answer">
                                 @csrf
                                 <div class="form-group">
-                                    <label for="isi">Isi Jawaban</label>
-                                    <input type="text" name="id_question" value="{{$question->id}}" hidden>
-                                    <input type="text" class="form-control  @error('isi') is-invalid @enderror "
-                                        id="isi" name="isi" placeholder="Masukan Jawaban kamu!">
+                                    <label for="content">Isi Jawaban</label>
+                                    <input type="text" name="question_id" value="{{$question->id}}" hidden>
+                                    <input type="text" name="user_id" value="{{$user->id}}" hidden>
+                                    <input type="text" class="form-control  @error('content') is-invalid @enderror "
+                                        id="content" name="content" placeholder="Masukan jawaban kamu!">
 
-                                    @error('isi')
+                                    @error('content')
                                     <div class="invalid-feedback">
                                         {{$message}}
                                     </div>
