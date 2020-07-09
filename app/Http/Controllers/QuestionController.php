@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Question;
-use App\Answer;
 use Illuminate\Http\Request;
 
 class QuestionController extends Controller
@@ -15,16 +14,7 @@ class QuestionController extends Controller
      */
     public function index()
     {
-        // take data
-        $questions = Question::all();
-        $answers = Answer::all();
-        // view
-        $data = [
-            'title' => "Welcome To Larahub",
-            'questions' => $questions,
-            'answers' => $answers
-        ];
-        return view('forum', $data);
+        
     }
 
     /**
@@ -47,12 +37,12 @@ class QuestionController extends Controller
     {
         // validasi
         $request->validate([
-            'judul' => 'required',
-            'isi' => 'required'
+            'title' => 'required',
+            'content' => 'required'
         ]);
         // insert data
         Question::create($request->all());
-        return redirect('/pertanyaan')->with('status', 'Pertanyaan dikirim!!');
+        return redirect('/home')->with('status', 'Pertanyaan dikirim!!');
     }
 
     /**

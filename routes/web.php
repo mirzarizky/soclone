@@ -18,14 +18,13 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
-Route::get('/pertanyaan', 'QuestionController@index');
-Route::post('/pertanyaan', 'QuestionController@store');
+Route::post('/question', 'QuestionController@store');
 Route::delete('/pertanyaan/{question}', 'QuestionController@destroy');
 Route::get('/pertanyaan/{question}/edit', 'QuestionController@edit');
 Route::patch('/pertanyaan/{question}', 'QuestionController@update');
 
 
-Route::post('/jawaban', 'AnswerController@store');
+Route::post('/answer', 'AnswerController@store');
 Route::get('/jawaban/{answer}/edit', 'AnswerController@edit');
 Route::patch('/jawaban/{answer}', 'AnswerController@update');
 Route::delete('/jawaban/{answer}', 'AnswerController@destroy');
