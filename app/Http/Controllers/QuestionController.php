@@ -78,14 +78,14 @@ class QuestionController extends Controller
     {
         // validasi
         $request->validate([
-            'judul' => 'required',
-            'isi' => 'required'
+            'title' => 'required',
+            'content' => 'required'
         ]);
         Question::where('id', $question->id)->update([
-            'judul' => $request->judul,
-            'isi' => $request->isi
+            'title' => $request->title,
+            'content' => $request->content
         ]);
-        return redirect('/pertanyaan')->with('status', 'Pertanyaan Diubah!!');
+        return redirect('/home')->with('status', 'Pertanyaan Diubah!!');
     }
 
     /**
@@ -97,6 +97,6 @@ class QuestionController extends Controller
     public function destroy(Question $question)
     {
         Question::destroy($question->id);
-        return redirect('/pertanyaan')->with('status', 'Pertanyaan Dihapus!!');
+        return redirect('/home')->with('status', 'Pertanyaan Dihapus!!');
     }
 }

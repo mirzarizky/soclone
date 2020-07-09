@@ -13,20 +13,20 @@
                     @method('patch')
                     @csrf
                     <div class="form-group">
-                        <label for="judul">Judul Pertanyaan</label>
-                        <input type="text" class=" @error('judul') is-invalid @enderror form-control" id="judul"
-                            name="judul" value="{{$question->judul}}">
-                        @error('judul')
+                        <label for="title">Judul Pertanyaan</label>
+                        <input type="text" class=" @error('title') is-invalid @enderror form-control" id="title"
+                            name="title" value="{{$question->title}}">
+                        @error('title')
                         <div class="invalid-feedback">
                             {{$message}}
                         </div>
                         @enderror
                     </div>
                     <div class="form-group">
-                        <label for="isi">Isi Pertanyaan</label>
-                        <textarea type="text" class="form-control  @error('isi') is-invalid @enderror " id="isi"
-                            name="isi">{{$question->isi}}</textarea>
-                        @error('isi')
+                        <label for="content">Isi Pertanyaan</label>
+                        <textarea type="text" class="form-control  @error('content') is-invalid @enderror " id="content"
+                            name="content">{{$question->content}}</textarea>
+                        @error('content')
                         <div class="invalid-feedback">
                             {{$message}}
                         </div>
