@@ -35,7 +35,11 @@ class AnswerCommentController extends Controller
      */
     public function store(Request $request)
     {
-        //
+         // validasi
+         $request->validate(['content' => 'required']);
+         // insert data
+         AnswerComment::create($request->all());
+         return redirect('/home')->with('status', 'Komentar dikirim!!');
     }
 
     /**
@@ -57,7 +61,7 @@ class AnswerCommentController extends Controller
      */
     public function edit(AnswerComment $answerComment)
     {
-        //
+        return view('edit_answer_comment', compact('answerComment'));
     }
 
     /**
@@ -69,7 +73,14 @@ class AnswerCommentController extends Controller
      */
     public function update(Request $request, AnswerComment $answerComment)
     {
-        //
+         // validasi
+         $request->validate([
+            'content' => 'required'
+        ]);
+        AnswerComment::where('id', $answerComment->id)->update([
+            'content' => $request->content
+        ]);
+        return redirect('/home')->with('status', 'Komentar Diubah!!');
     }
 
     /**
@@ -80,6 +91,7 @@ class AnswerCommentController extends Controller
      */
     public function destroy(AnswerComment $answerComment)
     {
-        //
+        AnswerComment::destroy($answerComment->id);
+        return redirect('/home')->with('status', 'Komentar jawaban Dihapus!!');
     }
 }

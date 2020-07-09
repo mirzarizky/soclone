@@ -14,7 +14,7 @@ class QuestionController extends Controller
      */
     public function index()
     {
-        //
+        
     }
 
     /**
@@ -35,7 +35,14 @@ class QuestionController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // validasi
+        $request->validate([
+            'title' => 'required',
+            'content' => 'required'
+        ]);
+        // insert data
+        Question::create($request->all());
+        return redirect('/home')->with('status', 'Pertanyaan dikirim!!');
     }
 
     /**
@@ -57,7 +64,7 @@ class QuestionController extends Controller
      */
     public function edit(Question $question)
     {
-        //
+        return view('edit_question', compact('question'));
     }
 
     /**
@@ -69,7 +76,16 @@ class QuestionController extends Controller
      */
     public function update(Request $request, Question $question)
     {
-        //
+        // validasi
+        $request->validate([
+            'title' => 'required',
+            'content' => 'required'
+        ]);
+        Question::where('id', $question->id)->update([
+            'title' => $request->title,
+            'content' => $request->content
+        ]);
+        return redirect('/home')->with('status', 'Pertanyaan Diubah!!');
     }
 
     /**
@@ -80,6 +96,7 @@ class QuestionController extends Controller
      */
     public function destroy(Question $question)
     {
-        //
+        Question::destroy($question->id);
+        return redirect('/home')->with('status', 'Pertanyaan Dihapus!!');
     }
 }

@@ -35,7 +35,11 @@ class AnswerController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // validasi
+        $request->validate(['content' => 'required']);
+        // insert data
+        Answer::create($request->all());
+        return redirect('/home')->with('status', 'Jawaban dikirim!!');
     }
 
     /**
@@ -57,7 +61,7 @@ class AnswerController extends Controller
      */
     public function edit(Answer $answer)
     {
-        //
+        return view('edit_answer', compact('answer'));
     }
 
     /**
@@ -69,7 +73,14 @@ class AnswerController extends Controller
      */
     public function update(Request $request, Answer $answer)
     {
-        //
+        // validasi
+        $request->validate([
+            'content' => 'required'
+        ]);
+        Answer::where('id', $answer->id)->update([
+            'content' => $request->content
+        ]);
+        return redirect('/home')->with('status', 'Jawaban Diubah!!');
     }
 
     /**
@@ -80,6 +91,7 @@ class AnswerController extends Controller
      */
     public function destroy(Answer $answer)
     {
-        //
+        Answer::destroy($answer->id);
+        return redirect('/home')->with('status', 'jawaban Dihapus!!');
     }
 }

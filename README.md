@@ -7,3 +7,9 @@
 3. Setup your `.env` file
 4. Generate IDE helper: `php artisan ide-helper:generate` (optional)
 5. Happy coding! 👩‍💻👨‍💻💻
+
+### ERD
+![ERD](public/img/erd.png)
+Notes:
+- Semua table menggunakan timestamps bawaan laravel kecuali table `question_tag`
+- Table `users` mengikuti table bawaan dari laravel, kemudian ditambah column `reputation_point`
