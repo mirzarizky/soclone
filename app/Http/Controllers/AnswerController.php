@@ -75,12 +75,12 @@ class AnswerController extends Controller
     {
         // validasi
         $request->validate([
-            'isi' => 'required'
+            'content' => 'required'
         ]);
         Answer::where('id', $answer->id)->update([
-            'isi' => $request->isi
+            'content' => $request->content
         ]);
-        return redirect('/pertanyaan')->with('status', 'Jawaban Diubah!!');
+        return redirect('/home')->with('status', 'Jawaban Diubah!!');
     }
 
     /**
@@ -92,6 +92,6 @@ class AnswerController extends Controller
     public function destroy(Answer $answer)
     {
         Answer::destroy($answer->id);
-        return redirect('/pertanyaan')->with('status', 'jawaban Dihapus!!');
+        return redirect('/home')->with('status', 'jawaban Dihapus!!');
     }
 }

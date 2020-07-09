@@ -13,10 +13,10 @@
                     @method('patch')
                     @csrf
                     <div class="form-group">
-                        <label for="isi">Isi jawaban</label>
-                        <textarea type="text" class="form-control  @error('isi') is-invalid @enderror " id="isi"
-                            name="isi">{{$answer->isi}}</textarea>
-                        @error('isi')
+                        <label for="content">Isi jawaban</label>
+                        <textarea type="text" class="form-control  @error('content') is-invalid @enderror " id="content"
+                            name="content">{{$answer->content}}</textarea>
+                        @error('content')
                         <div class="invalid-feedback">
                             {{$message}}
                         </div>

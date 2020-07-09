@@ -49,14 +49,16 @@
 
                     @foreach ($answers as $answer)
                     @if ($answer->question_id == $question->id)
-                <p class="text-muted text-right blockquote-footer">{{$answer->content}} - at {{$question->created_at->format('D M Y')}} By {{Auth::user()->name}}</p>
+                    <p class="text-muted text-right blockquote-footer">{{$answer->content}} - at
+                        {{$question->created_at->format('D M Y')}} By {{Auth::user()->name}}</p>
                     <a href="/jawaban/{{$answer->id}}/edit" class="badge badge-pill badge-primary"><i
-                        class="far fa-edit"></i></a>
+                            class="far fa-edit"></i></a>
                     <form action="/jawaban/{{$answer->id}}" method="POST" class="d-inline">
                         <span>
                             @method('delete')
                             @csrf
-                            <button class="badge badge-pill badge-danger text-right"><i class="far fa-trash-alt"></i></button>
+                            <button class="badge badge-pill badge-danger text-right"><i
+                                    class="far fa-trash-alt"></i></button>
                         </span>
                     </form>
                     <hr>
@@ -120,8 +122,9 @@
                         </div>
                         <div class="form-group">
                             <label for="content">Isi Pertanyaan</label>
-                            <textarea type="text" class="form-control  @error('content') is-invalid @enderror " id="content"
-                                name="content" placeholder="Masukan Pertanyaan kamu!" value="{{old('content')}}"></textarea>
+                            <textarea type="text" class="form-control  @error('content') is-invalid @enderror "
+                                id="content" name="content" placeholder="Masukan Pertanyaan kamu!"
+                                value="{{old('content')}}"></textarea>
                             @error('content')
                             <div class="invalid-feedback">
                                 {{$message}}
