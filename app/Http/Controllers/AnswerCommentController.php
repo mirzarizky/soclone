@@ -35,7 +35,11 @@ class AnswerCommentController extends Controller
      */
     public function store(Request $request)
     {
-        //
+         // validasi
+         $request->validate(['content' => 'required']);
+         // insert data
+         AnswerComment::create($request->all());
+         return redirect('/home')->with('status', 'Komentar dikirim!!');
     }
 
     /**

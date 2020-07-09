@@ -35,7 +35,11 @@ class QuestionCommentController extends Controller
      */
     public function store(Request $request)
     {
-        //
+         // validasi
+         $request->validate(['content' => 'required']);
+         // insert data
+         QuestionComment::create($request->all());
+         return redirect('/home')->with('status', 'Komentar dikirim!!');
     }
 
     /**
@@ -57,7 +61,7 @@ class QuestionCommentController extends Controller
      */
     public function edit(QuestionComment $questionComment)
     {
-        //
+        return view('edit_question_comment', compact('questionComment'));
     }
 
     /**
@@ -69,7 +73,15 @@ class QuestionCommentController extends Controller
      */
     public function update(Request $request, QuestionComment $questionComment)
     {
-        //
+        // validasi
+        $request->validate([
+            'content' => 'required'
+        ]);
+        QuestionComment::where('id', $questionComment->id)->update([
+            'content' => $request->content
+        ]);
+        return redirect('/home')->with('status', 'Komentar Diubah!!');
+        
     }
 
     /**
@@ -80,6 +92,7 @@ class QuestionCommentController extends Controller
      */
     public function destroy(QuestionComment $questionComment)
     {
-        //
+        QuestionComment::destroy($questionComment->id);
+        return redirect('/home')->with('status', 'Pertanyaan Dihapus!!');
     }
 }

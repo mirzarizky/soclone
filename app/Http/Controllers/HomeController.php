@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Question;
+use App\QuestionComment;
 use App\Answer;
 use App\user;
 
@@ -29,12 +30,15 @@ class HomeController extends Controller
     {
         // take data
         $questions = Question::all();
+        $questComents = QuestionComment::all();
         $answers = Answer::all();
         $users = User::all();
+        
         // view
         $data = [
             'title' => "Welcome To Larahub",
             'questions' => $questions,
+            'questComents' => $questComents,
             'answers' => $answers,
             'users' => $users
         ];

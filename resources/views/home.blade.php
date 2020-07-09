@@ -38,6 +38,9 @@
                             @csrf
                             <button class="btn btn-sm btn-danger"><i class="far fa-trash-alt"></i></button>
                         </form>
+                        <a data-toggle="collapse" data-target="#collapse_komentar_pertanyaan{{$question->id}}"
+                            aria-expanded="false" aria-controls="collapse_komentar_pertanyaan{{$question->id}}"><i
+                                class="btn btn-warning far fa-comment"></i></a>
                     </h5>
 
                     <p>{{$question->content}}</p>
@@ -47,14 +50,30 @@
                     @endif
 
                     {{-- daftar komentar pertanyaan --}}
-                    <a data-toggle="collapse" data-target="#collapse_komentar_pertanyaan{{$question->id}}"
-                        aria-expanded="false" aria-controls="collapse_komentar_pertanyaan{{$question->id}}"><i
-                            class="btn btn-warning far fa-comment"></i></a>
+                    <h6 class="text-left">- Komentar Pertanyaannya -</h6>
 
-                    <div class="collapse" id="collapse_komentar_pertanyaan{{$question->id}}">
+
+                    @foreach ($questComents as $questComent)
+                    @if ($questComent->question_id == $question->id)
+                    <p class="text-muted text-left blockquote-footer pt-3">{{$questComent->content}} - at
+                        {{$question->created_at->format('D M Y')}} By {{$user->name}}</p>
+
+                    <a href="/questionComment/{{$questComent->id}}/edit" class="btn btn-sm btn-primary"><i
+                            class="far fa-edit"></i></a>
+                    <form action="/questionComment/{{$questComent->id}}" method="POST" class="d-inline">
+                        <span>
+                            @method('delete')
+                            @csrf
+                            <button class="btn btn-sm btn-danger text-right"><i class="far fa-trash-alt"></i></button>
+                        </span>
+                    </form>
+                    @endif
+                    @endforeach
+                    <br>
+                    <div class="collapse pt-3" id="collapse_komentar_pertanyaan{{$question->id}}">
 
                         {{-- form --}}
-                        <form method="POST" action="/answer">
+                        <form method="POST" action="/questionComment">
                             @csrf
                             <div class="form-group">
                                 <label for="content">Isi Komentar</label>
@@ -91,8 +110,7 @@
                         <span>
                             @method('delete')
                             @csrf
-                            <button class="btn btn-sm btn-danger text-right"><i
-                                    class="far fa-trash-alt"></i></button>
+                            <button class="btn btn-sm btn-danger text-right"><i class="far fa-trash-alt"></i></button>
                         </span>
                     </form>
 
@@ -100,8 +118,9 @@
                     <a data-toggle="collapse" data-target="#collapse_komentar_jawaban{{$question->id}}"
                         aria-expanded="false" aria-controls="collapse_komentar_jawaban{{$question->id}}"><i
                             class="btn btn-warning far fa-comment"></i></a>
+                            <br>
 
-                    <div class="collapse" id="collapse_komentar_jawaban{{$question->id}}">
+                    <div class="collapse pt-3" id="collapse_komentar_jawaban{{$question->id}}">
 
                         {{-- form --}}
                         <form method="POST" action="/answer">
