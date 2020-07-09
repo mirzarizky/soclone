@@ -1,18 +1,18 @@
 @extends('layouts.app')
+
 @section('title', 'Larahub Home')
+
 @section('content')
-
-<div class="flex-center position-ref full-height">
-
-    <div class="content">
-        <div class="title m-b-md">
+<div class="d-flex justify-content-center flex-column mx-auto align-items-center">
+    <div class="pt-5">
+        <h1>
             Welcome To LaraHub!
-        </div>
+        </h1>
+    </div>
 
-        <div class="links">
-            <a href="{{url('/')}}">Home</a>
-            <a href="{{url('/home')}}">Forum</a>
-        </div>
+    <div>
+        <a href="{{url('/')}}" class="mx-3">Home</a>
+        <a href="{{url('/home')}}" class="mx-3">Forum</a>
     </div>
 </div>
 @endsection
