@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Question;
+use App\Answer;
 use Illuminate\Http\Request;
 
 class QuestionController extends Controller
@@ -14,7 +15,16 @@ class QuestionController extends Controller
      */
     public function index()
     {
-        //
+        // take data
+        $questions = Question::all();
+        $answers = Answer::all();
+        // view
+        $data = [
+            'title' => "Welcome To Larahub",
+            'questions' => $questions,
+            'answers' => $answers
+        ];
+        return view('forum', $data);
     }
 
     /**
@@ -35,7 +45,14 @@ class QuestionController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // validasi
+        $request->validate([
+            'judul' => 'required',
+            'isi' => 'required'
+        ]);
+        // insert data
+        Question::create($request->all());
+        return redirect('/pertanyaan')->with('status', 'Pertanyaan dikirim!!');
     }
 
     /**
@@ -57,7 +74,7 @@ class QuestionController extends Controller
      */
     public function edit(Question $question)
     {
-        //
+        return view('edit_question', compact('question'));
     }
 
     /**
@@ -69,7 +86,16 @@ class QuestionController extends Controller
      */
     public function update(Request $request, Question $question)
     {
-        //
+        // validasi
+        $request->validate([
+            'judul' => 'required',
+            'isi' => 'required'
+        ]);
+        Question::where('id', $question->id)->update([
+            'judul' => $request->judul,
+            'isi' => $request->isi
+        ]);
+        return redirect('/pertanyaan')->with('status', 'Pertanyaan Diubah!!');
     }
 
     /**
@@ -80,6 +106,7 @@ class QuestionController extends Controller
      */
     public function destroy(Question $question)
     {
-        //
+        Question::destroy($question->id);
+        return redirect('/pertanyaan')->with('status', 'Pertanyaan Dihapus!!');
     }
 }
