@@ -39,7 +39,12 @@
                     </h5>
 
                     <p>{{$question->content}}</p>
-                    <p class="text-muted">{{$question->created_at->format('D M Y, H:i')}}</p>
+                    @foreach ($users as $user)
+                    @if ($user->id == $question->user_id)
+                    <p class="text-muted">By {{ $user->name }}, {{$question->created_at->format('D M Y, H:i')}}</p>
+                    @endif
+                    @endforeach
+
                     <h6 class="text-right">- Komentar -</h6>
 
                     @foreach ($answers as $answer)

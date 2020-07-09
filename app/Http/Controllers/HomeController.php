@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Question;
 use App\Answer;
+use App\user;
 
 class HomeController extends Controller
 {
@@ -29,11 +30,13 @@ class HomeController extends Controller
         // take data
         $questions = Question::all();
         $answers = Answer::all();
+        $users = User::all();
         // view
         $data = [
             'title' => "Welcome To Larahub",
             'questions' => $questions,
-            'answers' => $answers
+            'answers' => $answers,
+            'users' => $users
         ];
         return view('home', $data);
     }
