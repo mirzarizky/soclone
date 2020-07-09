@@ -93,6 +93,6 @@ class QuestionCommentController extends Controller
     public function destroy(QuestionComment $questionComment)
     {
         QuestionComment::destroy($questionComment->id);
-        return redirect('/home')->with('status', 'Pertanyaan Dihapus!!');
+        return redirect('/home')->with('status', 'Komentar Pertanyaan Dihapus!!');
     }
 }

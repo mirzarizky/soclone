@@ -78,7 +78,7 @@
                             <div class="form-group">
                                 <label for="content">Isi Komentar</label>
                                 <input type="text" name="question_id" value="{{$question->id}}" hidden>
-                                <input type="text" name="user_id" value="{{$user->id}}" hidden>
+                                <input type="text" name="user_id" value="{{Auth::user()->id}}" hidden>
                                 <input type="text" class="form-control  @error('content') is-invalid @enderror "
                                     id="content" name="content" placeholder="Masukan komentar dari pertanyaan!">
 
@@ -97,12 +97,12 @@
                     @endforeach
 
                     {{-- daftar jawaban --}}
-                    <h6 class="text-right">- Jawaban -</h6>
+                    <h3 class="text-right">- Jawaban -</h3>
 
                     @foreach ($answers as $answer)
                     @if ($answer->question_id == $question->id)
                     <p class="text-muted text-right blockquote-footer">{{$answer->content}} - at
-                        {{$question->created_at->format('D M Y')}} By {{Auth::user()->name}}</p>
+                        {{$question->created_at->format('D M Y')}} By {{$user->name}}</p>
 
                     <a href="/jawaban/{{$answer->id}}/edit" class="btn btn-sm btn-primary"><i
                             class="far fa-edit"></i></a>
@@ -120,15 +120,35 @@
                             class="btn btn-warning far fa-comment"></i></a>
                             <br>
 
+                            <h6 class="text-right">- Komentar Jawabannya -</h6>
+
+
+                            @foreach ($answerComents as $answerComent)
+                            @if ($answerComent->answer_id == $answer->id)
+                            <p class="text-muted text-right blockquote-footer pt-3">{{$answerComent->content}} - at
+                                {{$answerComent->created_at->format('D M Y')}} By {{$user->name}}</p>
+        
+                            <a href="/answerComment/{{$answerComent->id}}/edit" class="btn btn-sm btn-primary"><i
+                                    class="far fa-edit"></i></a>
+                            <form action="/answerComment/{{$answerComent->id}}" method="POST" class="d-inline">
+                                <span>
+                                    @method('delete')
+                                    @csrf
+                                    <button class="btn btn-sm btn-danger text-right"><i class="far fa-trash-alt"></i></button>
+                                </span>
+                            </form>
+                            @endif
+                            @endforeach
+
                     <div class="collapse pt-3" id="collapse_komentar_jawaban{{$question->id}}">
 
                         {{-- form --}}
-                        <form method="POST" action="/answer">
+                        <form method="POST" action="/answerComment">
                             @csrf
                             <div class="form-group">
                                 <label for="content">Isi Komentar</label>
-                                <input type="text" name="question_id" value="{{$question->id}}" hidden>
-                                <input type="text" name="user_id" value="{{$user->id}}" hidden>
+                                <input type="text" name="answer_id" value="{{$answer->id}}" hidden>
+                                <input type="text" name="user_id" value="{{Auth::user()->id}}" hidden>
                                 <input type="text" class="form-control  @error('content') is-invalid @enderror "
                                     id="content" name="content" placeholder="Masukan komentar dari Jawaban!">
 
@@ -142,7 +162,6 @@
                             <button type="submit" class="btn btn-primary btn-sm">Komentari Jawaban!</button>
                         </form>
                     </div>
-                    <hr>
 
                     @endif
                     @endforeach
@@ -164,7 +183,7 @@
                                 <div class="form-group">
                                     <label for="content">Isi Jawaban</label>
                                     <input type="text" name="question_id" value="{{$question->id}}" hidden>
-                                    <input type="text" name="user_id" value="{{$user->id}}" hidden>
+                                    <input type="text" name="user_id" value="{{Auth::user()->id}}" hidden>
                                     <input type="text" class="form-control  @error('content') is-invalid @enderror "
                                         id="content" name="content" placeholder="Masukan jawaban kamu!">
 

@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Question;
 use App\QuestionComment;
 use App\Answer;
+use App\AnswerComment;
 use App\user;
 
 class HomeController extends Controller
@@ -32,6 +33,7 @@ class HomeController extends Controller
         $questions = Question::all();
         $questComents = QuestionComment::all();
         $answers = Answer::all();
+        $answerComents = AnswerComment::all();
         $users = User::all();
         
         // view
@@ -40,6 +42,7 @@ class HomeController extends Controller
             'questions' => $questions,
             'questComents' => $questComents,
             'answers' => $answers,
+            'answerComents' => $answerComents,
             'users' => $users
         ];
         return view('home', $data);

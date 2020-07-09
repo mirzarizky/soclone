@@ -36,6 +36,6 @@ Route::patch('/jawaban/{answer}', 'AnswerController@update');
 Route::delete('/jawaban/{answer}', 'AnswerController@destroy');
 
 Route::post('/answerComment', 'AnswerCommentController@store');
-Route::delete('/answerComment/{question}', 'AnswerCommentController@destroy');
-Route::get('/answerComment/{question}/edit', 'AnswerCommentController@edit');
-Route::patch('/answerComment/{question}', 'AnswerCommentController@update');
+Route::delete('/answerComment/{answerComment}', 'AnswerCommentController@destroy');
+Route::get('/answerComment/{answerComment}/edit', 'AnswerCommentController@edit');
+Route::patch('/answerComment/{answerComment}', 'AnswerCommentController@update');
