@@ -30,7 +30,7 @@
                     {{-- daftar pertanyaan --}}
                     @foreach ($questions as $question)
 
-                    <h5>{{$question->title}}
+                    <h5>{{$question->title}}<br>
                         <a href="/pertanyaan/{{$question->id}}/edit" class="btn btn-sm btn-primary"><i
                                 class="far fa-edit"></i></a>
                         <form action="/pertanyaan/{{$question->id}}" method="POST" class="d-inline">
@@ -38,9 +38,6 @@
                             @csrf
                             <button class="btn btn-sm btn-danger"><i class="far fa-trash-alt"></i></button>
                         </form>
-                        <a data-toggle="collapse" data-target="#collapse_komentar_pertanyaan{{$question->id}}"
-                            aria-expanded="false" aria-controls="collapse_komentar_pertanyaan{{$question->id}}"><i
-                                class="btn btn-warning far fa-comment"></i></a>
                     </h5>
 
                     <p>{{$question->content}}</p>
@@ -50,7 +47,9 @@
                     @endif
 
                     {{-- daftar komentar pertanyaan --}}
-                    <h6 class="text-left">- Komentar Pertanyaannya -</h6>
+                    <h6 class="text-left">- Komentar Pertanyaannya - <a data-toggle="collapse" data-target="#collapse_komentar_pertanyaan{{$question->id}}"
+                        aria-expanded="false" aria-controls="collapse_komentar_pertanyaan{{$question->id}}"><i
+                            class="btn btn-warning far fa-comment"></i></a></h6>
 
 
                     @foreach ($questComents as $questComent)
@@ -101,8 +100,8 @@
 
                     @foreach ($answers as $answer)
                     @if ($answer->question_id == $question->id)
-                    <p class="text-muted text-right blockquote-footer">{{$answer->content}} - at
-                        {{$question->created_at->format('D M Y')}} By {{$user->name}}</p>
+                    <h5 class="text-right">{{$answer->content}} - at
+                        {{$question->created_at->format('D M Y')}} By {{$user->name}}</h5>
 
                     <a href="/jawaban/{{$answer->id}}/edit" class="btn btn-sm btn-primary"><i
                             class="far fa-edit"></i></a>
@@ -115,12 +114,11 @@
                     </form>
 
                     {{-- daftar komentar jawaban --}}
-                    <a data-toggle="collapse" data-target="#collapse_komentar_jawaban{{$question->id}}"
-                        aria-expanded="false" aria-controls="collapse_komentar_jawaban{{$question->id}}"><i
-                            class="btn btn-warning far fa-comment"></i></a>
-                            <br>
+                
 
-                            <h6 class="text-right">- Komentar Jawabannya -</h6>
+                            <h6 class="text-right"><a data-toggle="collapse" data-target="#collapse_komentar_jawaban{{$question->id}}"
+                                aria-expanded="false" aria-controls="collapse_komentar_jawaban{{$question->id}}"><i
+                                    class="btn btn-warning far fa-comment"></i></a> - Komentar Jawabannya -</h6>
 
 
                             @foreach ($answerComents as $answerComent)
@@ -140,7 +138,7 @@
                             @endif
                             @endforeach
 
-                    <div class="collapse pt-3" id="collapse_komentar_jawaban{{$question->id}}">
+                    <div class="collapse pt-3 text-right" id="collapse_komentar_jawaban{{$question->id}}">
 
                         {{-- form --}}
                         <form method="POST" action="/answerComment">
