@@ -30,7 +30,7 @@
                     {{-- daftar pertanyaan --}}
                     @foreach ($questions as $question)
 
-                    <h5>{{$question->title}}<br>
+                    <h4>{{$question->title}}<br>
                         <a href="/pertanyaan/{{$question->id}}/edit" class="btn btn-sm btn-primary"><i
                                 class="far fa-edit"></i></a>
                         <form action="/pertanyaan/{{$question->id}}" method="POST" class="d-inline">
@@ -38,19 +38,20 @@
                             @csrf
                             <button class="btn btn-sm btn-danger"><i class="far fa-trash-alt"></i></button>
                         </form>
-                    </h5>
-
+                    </h4>
                     <p>{{$question->content}}</p>
+                    {{-- daftar komentar pertanyaan --}}
+
+
                     @foreach ($users as $user)
                     @if ($user->id == $question->user_id)
                     <p class="text-muted">By {{ $user->name }}, {{$question->created_at->format('D M Y, H:i')}}</p>
                     @endif
+                    @endforeach
 
-                    {{-- daftar komentar pertanyaan --}}
-                    <h6 class="text-left">- Komentar Pertanyaannya - <a data-toggle="collapse" data-target="#collapse_komentar_pertanyaan{{$question->id}}"
+                    <h6 class="text-left">- Komentar Pertanyaannya -<a data-toggle="collapse" data-target="#collapse_komentar_pertanyaan{{$question->id}}"
                         aria-expanded="false" aria-controls="collapse_komentar_pertanyaan{{$question->id}}"><i
                             class="btn btn-warning far fa-comment"></i></a></h6>
-
 
                     @foreach ($questComents as $questComent)
                     @if ($questComent->question_id == $question->id)
@@ -68,6 +69,7 @@
                     </form>
                     @endif
                     @endforeach
+
                     <br>
                     <div class="collapse pt-3" id="collapse_komentar_pertanyaan{{$question->id}}">
 
@@ -92,9 +94,6 @@
                         </form>
                     </div>
 
-
-                    @endforeach
-
                     {{-- daftar jawaban --}}
                     <h3 class="text-right">- Jawaban -</h3>
 
@@ -114,10 +113,10 @@
                     </form>
 
                     {{-- daftar komentar jawaban --}}
-                
 
-                            <h6 class="text-right"><a data-toggle="collapse" data-target="#collapse_komentar_jawaban{{$question->id}}"
-                                aria-expanded="false" aria-controls="collapse_komentar_jawaban{{$question->id}}"><i
+
+                            <h6 class="text-right"><a data-toggle="collapse" data-target="#collapse_komentar_jawaban{{$answer->id}}"
+                                aria-expanded="false" aria-controls="collapse_komentar_jawaban{{$answer->id}}"><i
                                     class="btn btn-warning far fa-comment"></i></a> - Komentar Jawabannya -</h6>
 
 
@@ -125,7 +124,7 @@
                             @if ($answerComent->answer_id == $answer->id)
                             <p class="text-muted text-right blockquote-footer pt-3">{{$answerComent->content}} - at
                                 {{$answerComent->created_at->format('D M Y')}} By {{$user->name}}</p>
-        
+
                             <a href="/answerComment/{{$answerComent->id}}/edit" class="btn btn-sm btn-primary"><i
                                     class="far fa-edit"></i></a>
                             <form action="/answerComment/{{$answerComent->id}}" method="POST" class="d-inline">
@@ -138,7 +137,7 @@
                             @endif
                             @endforeach
 
-                    <div class="collapse pt-3 text-right" id="collapse_komentar_jawaban{{$question->id}}">
+                    <div class="collapse pt-3 text-right" id="collapse_komentar_jawaban{{$answer->id}}">
 
                         {{-- form --}}
                         <form method="POST" action="/answerComment">
