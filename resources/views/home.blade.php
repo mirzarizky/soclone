@@ -36,7 +36,6 @@
                             {{-- untuk vote --}}
 
                             <div class="quantity">
-                                <p class="text-center">Vote!</p>
                                 <input type="number" min="1" max="100" step="1" value="1">
                             </div>
                         </div>
@@ -80,6 +79,7 @@
                         @endif
                         @endforeach</p>
                     @if ($questComent->user_id == Auth::user()->id)
+                    <div></div>
                     <a href="/questionComment/{{$questComent->id}}/edit" class="btn btn-sm btn-primary"><i
                             class="far fa-edit"></i></a>
                     <form action="/questionComment/{{$questComent->id}}" method="POST" class="d-inline">
@@ -120,6 +120,9 @@
                     <h3 class="text-right">- Jawaban -</h3>
                     @foreach ($answers as $answer)
                     @if ($answer->question_id == $question->id)
+                    <div class="quantity">
+                        <input type="number" min="1" max="100" step="1" value="1">
+                    </div>
                     <h5 class="text-right">{{$answer->content}} - at
                         {{$question->created_at->format('D M Y')}} By @foreach ($users as $user)
                         @if ($user->id == $answer->user_id)
@@ -137,6 +140,7 @@
                             <button class="btn btn-sm btn-danger text-right"><i class="far fa-trash-alt"></i></button>
                         </span>
                     </form>
+
                     @endif
 
 
@@ -243,8 +247,8 @@
             <div class="card-deck row m-0 justify-content-center shadow">
                 <div class="card-body">
 
-                {{-- membat pertanyaan --}}
-                <h3>Buat Pertanyaan.</h3>
+                    {{-- membat pertanyaan --}}
+                    <h3>Buat Pertanyaan.</h3>
 
                     {{-- form --}}
                     <form method="POST" action="/question">
