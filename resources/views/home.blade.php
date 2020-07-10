@@ -31,6 +31,8 @@
                     @foreach ($questions as $question)
 
                     <h4>{{$question->title}}<br>
+                        @if ($question->user_id == Auth::user()->id)
+
                         <a href="/pertanyaan/{{$question->id}}/edit" class="btn btn-sm btn-primary"><i
                                 class="far fa-edit"></i></a>
                         <form action="/pertanyaan/{{$question->id}}" method="POST" class="d-inline">
@@ -38,36 +40,43 @@
                             @csrf
                             <button class="btn btn-sm btn-danger"><i class="far fa-trash-alt"></i></button>
                         </form>
+                        @endif
                     </h4>
                     <p>{{$question->content}}</p>
-                    {{-- daftar komentar pertanyaan --}}
-
 
                     @foreach ($users as $user)
-                    @if ($user->id == $question->user_id)
-                    <p class="text-muted">By {{ $user->name }}, {{$question->created_at->format('D M Y, H:i')}}</p>
-                    @endif
+                        @if ($user->id == $question->user_id)
+                            <p class="text-muted">By {{ $user->name }}, {{$question->created_at->format('D M Y, H:i')}}</p>
+                        @endif
                     @endforeach
 
-                    <h6 class="text-left">- Komentar Pertanyaannya -<a data-toggle="collapse" data-target="#collapse_komentar_pertanyaan{{$question->id}}"
-                        aria-expanded="false" aria-controls="collapse_komentar_pertanyaan{{$question->id}}"><i
-                            class="btn btn-warning far fa-comment"></i></a></h6>
+                    <h6 class="text-left">- Komentar Pertanyaannya -<a data-toggle="collapse"
+                        data-target="#collapse_komentar_pertanyaan{{$question->id}}" aria-expanded="false"
+                        aria-controls="collapse_komentar_pertanyaan{{$question->id}}"><i
+                        class="btn btn-warning far fa-comment"></i></a></h6>
+
+                    {{-- daftar komentar pertanyaan --}}
 
                     @foreach ($questComents as $questComent)
-                    @if ($questComent->question_id == $question->id)
-                    <p class="text-muted text-left blockquote-footer pt-3">{{$questComent->content}} - at
-                        {{$question->created_at->format('D M Y')}} By {{$user->name}}</p>
-
-                    <a href="/questionComment/{{$questComent->id}}/edit" class="btn btn-sm btn-primary"><i
-                            class="far fa-edit"></i></a>
-                    <form action="/questionComment/{{$questComent->id}}" method="POST" class="d-inline">
-                        <span>
-                            @method('delete')
-                            @csrf
-                            <button class="btn btn-sm btn-danger text-right"><i class="far fa-trash-alt"></i></button>
-                        </span>
-                    </form>
-                    @endif
+                            @if ($questComent->question_id == $question->id)
+                                <p class="text-muted text-left blockquote-footer pt-3">{{$questComent->content}} - at
+                                {{$question->created_at->format('D M Y')}} By @foreach ($users as $user)
+                                    @if ($user->id == $questComent->user_id)
+                                        {{$user->name}}
+                                    @endif
+                                @endforeach</p>
+                                    @if ($questComent->user_id == Auth::user()->id)
+                                    <a href="/questionComment/{{$questComent->id}}/edit" class="btn btn-sm btn-primary"><i
+                                        class="far fa-edit"></i></a>
+                                        <form action="/questionComment/{{$questComent->id}}" method="POST" class="d-inline">
+                                            <span>
+                                                @method('delete')
+                                                @csrf
+                                                <button class="btn btn-sm btn-danger text-right"><i class="far fa-trash-alt"></i></button>
+                                            </span>
+                                        </form>
+                                    @endif
+                            @endif
                     @endforeach
 
                     <br>
@@ -101,7 +110,7 @@
                     @if ($answer->question_id == $question->id)
                     <h5 class="text-right">{{$answer->content}} - at
                         {{$question->created_at->format('D M Y')}} By {{$user->name}}</h5>
-
+                    @if ($answer->user_id == Auth::user()->id)
                     <a href="/jawaban/{{$answer->id}}/edit" class="btn btn-sm btn-primary"><i
                             class="far fa-edit"></i></a>
                     <form action="/jawaban/{{$answer->id}}" method="POST" class="d-inline">
@@ -111,31 +120,39 @@
                             <button class="btn btn-sm btn-danger text-right"><i class="far fa-trash-alt"></i></button>
                         </span>
                     </form>
+                    @endif
+
+
 
                     {{-- daftar komentar jawaban --}}
 
 
-                            <h6 class="text-right"><a data-toggle="collapse" data-target="#collapse_komentar_jawaban{{$answer->id}}"
-                                aria-expanded="false" aria-controls="collapse_komentar_jawaban{{$answer->id}}"><i
-                                    class="btn btn-warning far fa-comment"></i></a> - Komentar Jawabannya -</h6>
+                    <h6 class="text-right"><a data-toggle="collapse"
+                            data-target="#collapse_komentar_jawaban{{$answer->id}}" aria-expanded="false"
+                            aria-controls="collapse_komentar_jawaban{{$answer->id}}"><i
+                                class="btn btn-warning far fa-comment"></i></a> - Komentar Jawabannya -</h6>
 
 
-                            @foreach ($answerComents as $answerComent)
-                            @if ($answerComent->answer_id == $answer->id)
-                            <p class="text-muted text-right blockquote-footer pt-3">{{$answerComent->content}} - at
-                                {{$answerComent->created_at->format('D M Y')}} By {{$user->name}}</p>
+                    @foreach ($answerComents as $answerComent)
+                    @if ($answerComent->answer_id == $answer->id)
+                    <p class="text-muted text-right blockquote-footer pt-3">{{$answerComent->content}} - at
+                        {{$answerComent->created_at->format('D M Y')}} By {{$user->name}}</p>
 
-                            <a href="/answerComment/{{$answerComent->id}}/edit" class="btn btn-sm btn-primary"><i
-                                    class="far fa-edit"></i></a>
-                            <form action="/answerComment/{{$answerComent->id}}" method="POST" class="d-inline">
-                                <span>
-                                    @method('delete')
-                                    @csrf
-                                    <button class="btn btn-sm btn-danger text-right"><i class="far fa-trash-alt"></i></button>
-                                </span>
-                            </form>
-                            @endif
-                            @endforeach
+                    @if ($answerComent->user_id == Auth::user()->id)
+                    <a href="/answerComment/{{$answerComent->id}}/edit" class="btn btn-sm btn-primary"><i
+                            class="far fa-edit"></i></a>
+                    <form action="/answerComment/{{$answerComent->id}}" method="POST" class="d-inline">
+                        <span>
+                            @method('delete')
+                            @csrf
+                            <button class="btn btn-sm btn-danger text-right"><i class="far fa-trash-alt"></i></button>
+                        </span>
+                    </form>
+                    @endif
+
+
+                    @endif
+                    @endforeach
 
                     <div class="collapse pt-3 text-right" id="collapse_komentar_jawaban{{$answer->id}}">
 
