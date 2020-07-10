@@ -109,7 +109,12 @@
                     @foreach ($answers as $answer)
                     @if ($answer->question_id == $question->id)
                     <h5 class="text-right">{{$answer->content}} - at
-                        {{$question->created_at->format('D M Y')}} By {{$user->name}}</h5>
+                        {{$question->created_at->format('D M Y')}} By @foreach ($users as $user)
+                        @if ($user->id == $answer->user_id)
+                            {{$user->name}}
+                        @endif
+                    @endforeach</p>
+                    </h5>
                     @if ($answer->user_id == Auth::user()->id)
                     <a href="/jawaban/{{$answer->id}}/edit" class="btn btn-sm btn-primary"><i
                             class="far fa-edit"></i></a>
@@ -136,7 +141,11 @@
                     @foreach ($answerComents as $answerComent)
                     @if ($answerComent->answer_id == $answer->id)
                     <p class="text-muted text-right blockquote-footer pt-3">{{$answerComent->content}} - at
-                        {{$answerComent->created_at->format('D M Y')}} By {{$user->name}}</p>
+                        {{$answerComent->created_at->format('D M Y')}} By @foreach ($users as $user)
+                        @if ($user->id == $answerComent->user_id)
+                            {{$user->name}}
+                        @endif
+                    @endforeach</p>
 
                     @if ($answerComent->user_id == Auth::user()->id)
                     <a href="/answerComment/{{$answerComent->id}}/edit" class="btn btn-sm btn-primary"><i
