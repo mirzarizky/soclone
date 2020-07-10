@@ -22,13 +22,16 @@
             @endif
         </div>
         <div class="col-lg-8">
-            <div class="card-deck row m-0 justify-content-center shadow">
+            <div class="card-deck row m-0 justify-content-center shadow mb-3">
                 <div class="card-body">
                     <h3>Daftar Pertanyaan.</h3>
-                    <hr>
+                </div>
+            </div>
+            {{-- daftar pertanyaan --}}
+            @foreach ($questions as $question)
+            <div class="card-deck row m-0 justify-content-center shadow my-3">
+                <div class="card-body">
 
-                    {{-- daftar pertanyaan --}}
-                    @foreach ($questions as $question)
 
                     <h4>{{$question->title}}<br>
                         @if ($question->user_id == Auth::user()->id)
@@ -59,7 +62,7 @@
 
                     @foreach ($questComents as $questComent)
                             @if ($questComent->question_id == $question->id)
-                                <p class="text-muted text-left blockquote-footer pt-3">{{$questComent->content}} - at
+                                <p class="text-muted text-left blockquote-footer">{{$questComent->content}} - at
                                 {{$question->created_at->format('D M Y')}} By @foreach ($users as $user)
                                     @if ($user->id == $questComent->user_id)
                                         {{$user->name}}
@@ -78,9 +81,7 @@
                                     @endif
                             @endif
                     @endforeach
-
-                    <br>
-                    <div class="collapse pt-3" id="collapse_komentar_pertanyaan{{$question->id}}">
+                    <div class="collapse" id="collapse_komentar_pertanyaan{{$question->id}}">
 
                         {{-- form --}}
                         <form method="POST" action="/questionComment">
@@ -102,6 +103,7 @@
                             <button type="submit" class="btn btn-primary btn-sm">Komentari Pertanyaan!</button>
                         </form>
                     </div>
+                    <hr>
 
                     {{-- daftar jawaban --}}
                     <h3 class="text-right">- Jawaban -</h3>
@@ -140,7 +142,7 @@
 
                     @foreach ($answerComents as $answerComent)
                     @if ($answerComent->answer_id == $answer->id)
-                    <p class="text-muted text-right blockquote-footer pt-3">{{$answerComent->content}} - at
+                    <p class="text-muted text-right blockquote-footer">{{$answerComent->content}} - at
                         {{$answerComent->created_at->format('D M Y')}} By @foreach ($users as $user)
                         @if ($user->id == $answerComent->user_id)
                             {{$user->name}}
@@ -163,7 +165,7 @@
                     @endif
                     @endforeach
 
-                    <div class="collapse pt-3 text-right" id="collapse_komentar_jawaban{{$answer->id}}">
+                    <div class="collapse text-right pb-3" id="collapse_komentar_jawaban{{$answer->id}}">
 
                         {{-- form --}}
                         <form method="POST" action="/answerComment">
@@ -221,10 +223,10 @@
                             </form>
                         </div>
                     </div>
-                    <hr>
-                    @endforeach
+
                 </div>
             </div>
+            @endforeach
         </div>
         <div class="col-lg-4">
             <div class="card-deck row m-0 justify-content-center shadow">
