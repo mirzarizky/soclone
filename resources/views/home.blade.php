@@ -36,7 +36,7 @@
                             {{-- untuk vote --}}
 
                             <div class="quantity">
-                                <input type="number" min="1" max="100" step="1" value="1">
+                                <input type="number" disabled min="1" max="100" step="1" value="1">
                             </div>
                         </div>
                         <div class="col-sm-11">
@@ -256,7 +256,7 @@
                         <div class="form-group">
                             <label for="judul">Judul Pertanyaan</label>
                             <input type="text" class=" @error('title') is-invalid @enderror form-control" id="title"
-                                name="title" placeholder="Masukan title Pertanyaan" value="{{old('title')}}">
+                                name="title" placeholder="Masukan title Pertanyaan" value="{{old('title')}}" required>
                             @error('title')
                             <div class="invalid-feedback">
                                 {{$message}}
@@ -266,15 +266,24 @@
                         <div class="form-group">
                             <label for="content">Isi Pertanyaan</label>
                             <textarea type="text" class="form-control  @error('content') is-invalid @enderror "
-                                id="content" name="content" placeholder="Masukan Pertanyaan kamu!"
-                                value="{{old('content')}}"></textarea>
+                                id="content" name="content" placeholder="Masukan Pertanyaan kamu!" required rows="3">{{old('content')}}</textarea>
                             @error('content')
                             <div class="invalid-feedback">
                                 {{$message}}
                             </div>
                             @enderror
                         </div>
-                        <input type="text" name="user_id" id="" value="{{Auth::user()->id}}" hidden>
+                        <div class="form-group">
+                            <label for="content">Tag Pertanyaan</label>
+                            <textarea type="text" class="form-control @error('content') is-invalid @enderror"
+                                id="tag" name="tags" placeholder="Masukan Tag Pertanyaan kamu! (Pisahkan dengan spasi)" required>{{ old('tags') }}</textarea>
+                            @error('tags')
+                            <div class="invalid-feedback">
+                                {{$message}}
+                            </div>
+                            @enderror
+                        </div>
+                        <input type="hidden" name="user_id" id="" value="{{Auth::user()->id}}">
                         <button type="submit" class="btn btn-primary">Buat Pertanyaan!</button>
                     </form>
                 </div>
