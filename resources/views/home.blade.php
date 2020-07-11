@@ -20,6 +20,12 @@
                 {{ session('status') }}
             </div>
             @endif
+
+            @if(session('danger'))
+            <div class="alert alert-danger">
+                {{ session('danger') }}
+            </div>
+            @endif
         </div>
         <div class="col-lg-8">
             <div class="card-deck row m-0 justify-content-center shadow mb-3">
@@ -36,8 +42,16 @@
                             {{-- untuk vote --}}
 
                             <div class="quantity">
-                                <input type="number" disabled min="1" max="100" step="1" value="1">
+                                <input type="number" data-vote="question" data-id="{{$question->id}}" disabled min="1" max="100" step="1" value="{{ $question->vote_point() }}">
                             </div>
+                            <form id="vote-question-up-{{$question->id}}" action="{{ route('question.vote', $question) }}" method="post">
+                                @csrf
+                                <input type="hidden" name="vote" value="1">
+                            </form>
+                            <form id="vote-question-down-{{$question->id}}" action="{{ route('question.vote', $question) }}" method="post">
+                                @csrf
+                                <input type="hidden" name="vote" value="0">
+                            </form>
                         </div>
                         <div class="col-sm-11">
                             <h4>{{$question->title}} <br>
@@ -126,8 +140,16 @@
                     @foreach ($answers as $answer)
                     @if ($answer->question_id == $question->id)
                     <div class="quantity">
-                        <input type="number" min="1" max="100" step="1" value="1">
+                        <input type="number" data-vote="answer" data-id="{{$answer->id}}" disabled min="1" max="100" step="1" value="{{ $answer->vote_point() }}">
                     </div>
+                    <form id="vote-answer-up-{{$answer->id}}" action="{{ route('answer.vote', $answer) }}" method="post">
+                        @csrf
+                        <input type="hidden" name="vote" value="1">
+                    </form>
+                    <form id="vote-answer-down-{{$answer->id}}" action="{{ route('answer.vote', $answer) }}" method="post">
+                        @csrf
+                        <input type="hidden" name="vote" value="0">
+                    </form>
                     <h5 class="text-right">{{$answer->content}} - at
                         {{$question->created_at->format('D M Y')}} By @foreach ($users as $user)
                         @if ($user->id == $answer->user_id)
@@ -297,3 +319,32 @@
     </div>
 </div>
 @endsection
+
+@push('scripts')
+<script>
+    $(document).ready(function() {
+        $('<div class="quantity-nav"><div class="quantity-button quantity-up">+</div><div class="quantity-button quantity-down">-</div></div>').insertAfter('.quantity input');
+        $('.quantity').each(function() {
+            var spinner = $(this),
+                input = spinner.find('input[type="number"]'),
+                btnUp = spinner.find('.quantity-up'),
+                btnDown = spinner.find('.quantity-down'),
+                min = input.attr('min'),
+                max = input.attr('max');
+
+
+            btnUp.click(function() {
+                var model = spinner.find('input').data('vote');
+                var modelId = spinner.find('input').data('id');
+                $(`#vote-${model}-up-${modelId}`).submit();
+            });
+
+            btnDown.click(function() {
+                var model = spinner.find('input').data('vote');
+                var modelId = spinner.find('input').data('id');
+                $(`#vote-${model}-down-${modelId}`).submit();
+            });
+        });
+    })
+</script>
+@endpush

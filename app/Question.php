@@ -45,4 +45,23 @@ class Question extends Model
     {
         return $this->hasMany(QuestionVote::class);
     }
+
+    public function hasVotedBy($user)
+    {
+        return $this->votes->where('user_id', $user->id)->count() ? true : false;
+    }
+
+    public function vote_point()
+    {
+        $votes = $this->votes;
+
+        if ($votes) {
+            $upVote = $votes->where('vote', 1)->count();
+            $downVote = $votes->where('vote', 0)->count();
+
+            return $upVote - $downVote;
+        } else {
+            return 0;
+        }
+    }
 }
