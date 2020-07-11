@@ -2,85 +2,56 @@
 
 namespace App\Http\Controllers;
 
+use App\Answer;
 use App\AnswerVote;
 use Illuminate\Http\Request;
 
 class AnswerVoteController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+    public function vote(Answer $answer, Request $request)
     {
-        //
-    }
+        $request->validate([
+            'vote' => 'required|boolean'
+        ]);
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
+        // check if user was the answer's author
+        if ($answer->user == $request->user()) {
+            return redirect()->back()->with([
+                'danger' => 'Anda tidak dapat memberikan vote pada jawaban anda sendiri.'
+            ]);
+        }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
+        // check if user has already voted
+        if ($answer->hasVotedBy($request->user())) {
+            return redirect()->back()->with([
+                'danger' => 'Anda sudah memberikan vote.'
+            ]);
+        }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\AnswerVote  $answerVote
-     * @return \Illuminate\Http\Response
-     */
-    public function show(AnswerVote $answerVote)
-    {
-        //
-    }
+        // check if user is able to downvote
+        if ($request->vote == 0) {
+            if (!$request->user()->isAbleToDownVote()) {
+                return redirect()->back()->with([
+                    'danger' => 'Anda tidak dapat melakukan downvote. Minimal reputasi poin untuk melakukan downvote adalah 15 poin.'
+                ]);
+            }
+        }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\AnswerVote  $answerVote
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(AnswerVote $answerVote)
-    {
-        //
-    }
+        $newVote = AnswerVote::create([
+            'vote' => $request->vote,
+            'answer_id' => $answer->id,
+            'user_id' => auth()->id()
+        ]);
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\AnswerVote  $answerVote
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, AnswerVote $answerVote)
-    {
-        //
-    }
+        if ($newVote->vote == 1) {
+            $answer->user->gainUpVote();
+        } else {
+            $answer->user->gainDropVote();
+        }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\AnswerVote  $answerVote
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(AnswerVote $answerVote)
-    {
-        //
+        return redirect()->back()->with([
+            'status' => 'Berhasil memberikan vote.'
+        ]);
     }
     
 //     Usernya ( count_reputation) - PertanyaanVote ( up, down, pertanyaan_id, user_id)

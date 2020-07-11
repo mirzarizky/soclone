@@ -43,3 +43,6 @@ Route::patch('/answerComment/{answerComment}', 'AnswerCommentController@update')
 Route::group(['prefix' => 'laravel-filemanager', 'middleware' => ['web', 'auth']], function () {
     \UniSharp\LaravelFilemanager\Lfm::routes();
 });
+
+Route::post('vote/question/{question}', 'QuestionVoteController@vote')->name('question.vote');
+Route::post('vote/answer/{answer}', 'AnswerVoteController@vote')->name('answer.vote');

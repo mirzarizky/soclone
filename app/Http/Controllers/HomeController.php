@@ -30,12 +30,12 @@ class HomeController extends Controller
     public function index()
     {
         // take data
-        $questions = Question::all();
-        $questComents = QuestionComment::all();
-        $answers = Answer::all();
-        $answerComents = AnswerComment::all();
-        $users = User::all();
-        
+        $questions = Question::orderBy('id', 'desc')->get();
+        $questComents = QuestionComment::orderBy('id', 'desc')->get();
+        $answers = Answer::orderBy('id', 'desc')->get();
+        $answerComents = AnswerComment::orderBy('id', 'desc')->get();
+        $users = User::orderBy('id', 'desc')->get();
+
         // view
         $data = [
             'title' => " ",  //"Welcome To Larahub"

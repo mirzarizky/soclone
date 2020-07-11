@@ -42,6 +42,16 @@
                         </div>
                         @enderror
                     </div>
+                    <div class="form-group">
+                        <label for="content">Tag Pertanyaan</label>
+                        <textarea type="text" class="form-control @error('content') is-invalid @enderror"
+                            id="tag" name="tags" placeholder="Masukan Tag Pertanyaan kamu! (Pisahkan dengan spasi)" required>{{ old('tags') ?: $question->tags->implode('name', ' ') }}</textarea>
+                        @error('tags')
+                        <div class="invalid-feedback">
+                            {{$message}}
+                        </div>
+                        @enderror
+                    </div>
                     <button type="submit" class="btn btn-primary">Edit Pertanyaan!</button>
                 </form>
             </div>
