@@ -39,3 +39,6 @@ Route::post('/answerComment', 'AnswerCommentController@store');
 Route::delete('/answerComment/{answerComment}', 'AnswerCommentController@destroy');
 Route::get('/answerComment/{answerComment}/edit', 'AnswerCommentController@edit');
 Route::patch('/answerComment/{answerComment}', 'AnswerCommentController@update');
+
+Route::post('vote/question/{question}', 'QuestionVoteController@vote')->name('question.vote');
+Route::post('vote/answer/{answer}', 'AnswerVoteController@vote')->name('answer.vote');
