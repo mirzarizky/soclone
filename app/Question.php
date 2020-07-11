@@ -15,6 +15,8 @@ class Question extends Model
     public function delete()
     {
         $this->answers()->delete();
+        $this->comments()->delete();
+        $this->votes()->delete();
 
         return parent::delete();
     }
@@ -32,5 +34,15 @@ class Question extends Model
     public function answers()
     {
         return $this->hasMany(Answer::class);
+    }
+
+    public function comments()
+    {
+        return $this->hasMany(QuestionComment::class);
+    }
+
+    public function votes()
+    {
+        return $this->hasMany(QuestionVote::class);
     }
 }

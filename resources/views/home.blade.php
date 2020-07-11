@@ -52,6 +52,11 @@
                                 </form>
                                 @endif
                             </h4>
+                            <div class="my-2">
+                                @foreach ($question->tags as $tag)
+                                    <span class="bg-success px-2 py-1 rounded-sm text-white">{{$tag->name}}</span>
+                                @endforeach
+                            </div>
                             <p>{{$question->content}}</p>
 
                             @foreach ($users as $user)
