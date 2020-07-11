@@ -165,13 +165,21 @@
                             {{$question->created_at->format('D M Y')}} By @foreach ($users as $user)
                             @if ($user->id == $answer->user_id)
                             {{$user->name}}
-                            @if ($question->user_id == Auth::user()->id)
-                            <form action="/jawaban/{{$answer->id}}/approved" method="post">
+                            @if ($question->user_id == Auth::user()->id)<br>
+                            <form action="/jawaban/{{$answer->id}}/approved" method="post" class="d-inline">
                                 @method('patch')
                                 @csrf
                                 <input type="text" value="1" name="best_answer" hidden>
-                                <button class="btn d-inline" type="submit"><i class="far fa-check-circle"></i></button>
+                                <button class="btn" type="submit"><i class="far fa-check-circle"></i></button>
                             </form>
+                            @if ($answer->best_answer == 1)
+                            <form action="/jawaban/{{$answer->id}}/approved" method="post" class="d-inline">
+                                @method('patch')
+                                @csrf
+                                <input type="text" value="0" name="best_answer" hidden>
+                                <button class="btn" type="submit"><i class="fa fa-times" aria-hidden="true"></i></button>
+                            </form>
+                            @endif
 
                             @else
                             <i class="far fa-check-circle"></i>

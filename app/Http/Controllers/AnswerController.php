@@ -104,6 +104,6 @@ class AnswerController extends Controller
             'best_answer' => $request->best_answer
         ]);
 
-        return redirect('/home')->with('status', 'Jawaban Terbaik Terpilih!!');
+        return redirect('/home')->with('status', 'Jawaban Terbaik Diatur!!');
     }
 }
