@@ -303,7 +303,8 @@
                         <div class="form-group">
                             <label for="content">Tag Pertanyaan</label>
                             <textarea type="text" class="form-control @error('content') is-invalid @enderror"
-                                id="tag" name="tags" placeholder="Masukan Tag Pertanyaan kamu! (Pisahkan dengan spasi)" required>{{ old('tags') }}</textarea>
+                                id="tag" name="tags" placeholder="Masukan Tag Pertanyaan kamu!" required>{{ old('tags') }}</textarea>
+                                <small id="tags" class="form-text text-muted">*Pisahkan dengan spasi</small>
                             @error('tags')
                             <div class="invalid-feedback">
                                 {{$message}}
