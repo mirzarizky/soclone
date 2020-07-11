@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Question;
+use App\QuestionComment;
+use App\Tag;
 use Illuminate\Http\Request;
 
 class QuestionController extends Controller
@@ -14,7 +16,6 @@ class QuestionController extends Controller
      */
     public function index()
     {
-        
     }
 
     /**
@@ -41,7 +42,14 @@ class QuestionController extends Controller
             'content' => 'required'
         ]);
         // insert data
-        Question::create($request->all());
+        $question = Question::create($request->all());
+
+        // inserting tag to question
+        foreach (explode(' ', $request->tags) as $tag) {
+            $tag = Tag::firstOrCreate(['name' => $tag]);
+            $question->tags()->attach($tag);
+        }
+
         return redirect('/home')->with('status', 'Pertanyaan dikirim!!');
     }
 
@@ -81,10 +89,19 @@ class QuestionController extends Controller
             'title' => 'required',
             'content' => 'required'
         ]);
-        Question::where('id', $question->id)->update([
+        $question->update([
             'title' => $request->title,
             'content' => $request->content
         ]);
+
+        // updating tags
+        $tagIds = [];
+        foreach (explode(' ', $request->tags) as $tag) {
+            $tag = Tag::firstOrCreate(['name' => $tag]);
+            $tagIds[] = $tag->id;
+        }
+        $question->tags()->sync($tagIds);
+
         return redirect('/home')->with('status', 'Pertanyaan Diubah!!');
     }
 
@@ -96,7 +113,7 @@ class QuestionController extends Controller
      */
     public function destroy(Question $question)
     {
-        Question::destroy($question->id);
+        $question->delete();
         return redirect('/home')->with('status', 'Pertanyaan Dihapus!!');
     }
 }

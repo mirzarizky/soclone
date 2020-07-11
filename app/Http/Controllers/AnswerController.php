@@ -39,6 +39,7 @@ class AnswerController extends Controller
         $request->validate(['content' => 'required']);
         // insert data
         Answer::create($request->all());
+
         return redirect('/home')->with('status', 'Jawaban dikirim!!');
     }
 
@@ -77,9 +78,10 @@ class AnswerController extends Controller
         $request->validate([
             'content' => 'required'
         ]);
-        Answer::where('id', $answer->id)->update([
+        $answer->update([
             'content' => $request->content
         ]);
+
         return redirect('/home')->with('status', 'Jawaban Diubah!!');
     }
 
@@ -91,7 +93,8 @@ class AnswerController extends Controller
      */
     public function destroy(Answer $answer)
     {
-        Answer::destroy($answer->id);
+        $answer->delete();
+
         return redirect('/home')->with('status', 'jawaban Dihapus!!');
     }
 }
