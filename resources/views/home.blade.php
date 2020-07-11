@@ -150,13 +150,25 @@
                         @csrf
                         <input type="hidden" name="vote" value="0">
                     </form>
-                    <h5 class="text-right">{{$answer->content}} - at
+                    @if ($answer->best_answer == 1)
+                    <h5 class="text-right alert alert-primary">
+                    @else
+                    <h5 class="text-right">
+                    @endif
+                    {{$answer->content}} - at
                         {{$question->created_at->format('D M Y')}} By @foreach ($users as $user)
                         @if ($user->id == $answer->user_id)
                         {{$user->name}}
+                        <form action="/jawaban/{{$question->id}}/approved" method="post">
+                            @method('patch')
+                            @csrf
+                            <input type="text" value="1" name="best_answer" hidden>
+                            <button class="btn d-inline" type="submit"><i class="far fa-check-circle"></i></button>
+                        </form>
                         @endif
                         @endforeach</p>
                     </h5>
+
                     @if ($answer->user_id == Auth::user()->id)
                     <a href="/jawaban/{{$answer->id}}/edit" class="btn btn-sm btn-primary"><i
                             class="far fa-edit"></i></a>

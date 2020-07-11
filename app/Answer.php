@@ -9,7 +9,7 @@ class Answer extends Model
     protected $table = 'answers';
 
     protected $fillable = [
-        'question_id', 'user_id', 'content'
+        'question_id', 'user_id', 'content', 'best_answer'
     ];
 
     public function delete()

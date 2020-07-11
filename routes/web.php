@@ -34,6 +34,7 @@ Route::post('/answer', 'AnswerController@store');
 Route::get('/jawaban/{answer}/edit', 'AnswerController@edit');
 Route::patch('/jawaban/{answer}', 'AnswerController@update');
 Route::delete('/jawaban/{answer}', 'AnswerController@destroy');
+Route::patch('/jawaban/{answer}/approved', 'AnswerController@approved');
 
 Route::post('/answerComment', 'AnswerCommentController@store');
 Route::delete('/answerComment/{answerComment}', 'AnswerCommentController@destroy');
