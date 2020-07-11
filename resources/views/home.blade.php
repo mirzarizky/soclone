@@ -1,5 +1,11 @@
 @extends('layouts.app')
 
+@push('script-head')
+
+<script src="//cdn.tinymce.com/4/tinymce.min.js"></script>
+
+@endpush
+
 @section('content')
 <div class="container">
     <div class="row justify-content-center mb-3">
@@ -43,7 +49,7 @@
                                 class="btn btn-warning far fa-comment"></i></a>
                     </h5>
 
-                    <p>{{$question->content}}</p>
+                    <p>{!! $question->content !!}</p>
                     @foreach ($users as $user)
                     @if ($user->id == $question->user_id)
                     <p class="text-muted">By {{ $user->name }}, {{$question->created_at->format('D M Y, H:i')}}</p>
@@ -55,7 +61,7 @@
 
                     @foreach ($questComents as $questComent)
                     @if ($questComent->question_id == $question->id)
-                    <p class="text-muted text-left blockquote-footer pt-3">{{$questComent->content}} - at
+                    <p class="text-muted text-left blockquote-footer pt-3">{!! $questComent->content !!} - at
                         {{$question->created_at->format('D M Y')}} By {{$user->name}}</p>
 
                     <a href="/questionComment/{{$questComent->id}}/edit" class="btn btn-sm btn-primary"><i
@@ -79,8 +85,11 @@
                                 <label for="content">Isi Komentar</label>
                                 <input type="text" name="question_id" value="{{$question->id}}" hidden>
                                 <input type="text" name="user_id" value="{{Auth::user()->id}}" hidden>
-                                <input type="text" class="form-control  @error('content') is-invalid @enderror "
-                                    id="content" name="content" placeholder="Masukan komentar dari pertanyaan!">
+                                {{-- <input type="text" class="form-control  @error('content') is-invalid @enderror "
+                                    id="content" name="content" placeholder="Masukan komentar dari pertanyaan!"> --}}
+                                <textarea type="text" class="form-control my-editor  @error('content') is-invalid @enderror "
+                                    id="content" name="content" placeholder="Masukan komentar dari pertanyaan!"
+                                    value="{{old('content')}}">{!! old('content') !!}</textarea>
 
                                 @error('content')
                                 <div class="invalid-feedback">
@@ -101,7 +110,7 @@
 
                     @foreach ($answers as $answer)
                     @if ($answer->question_id == $question->id)
-                    <p class="text-muted text-right blockquote-footer">{{$answer->content}} - at
+                    <p class="text-muted text-right blockquote-footer">{!! $answer->content !!} - at
                         {{$question->created_at->format('D M Y')}} By {{$user->name}}</p>
 
                     <a href="/jawaban/{{$answer->id}}/edit" class="btn btn-sm btn-primary"><i
@@ -125,7 +134,7 @@
 
                             @foreach ($answerComents as $answerComent)
                             @if ($answerComent->answer_id == $answer->id)
-                            <p class="text-muted text-right blockquote-footer pt-3">{{$answerComent->content}} - at
+                            <p class="text-muted text-right blockquote-footer pt-3">{!! $answerComent->content !!} - at
                                 {{$answerComent->created_at->format('D M Y')}} By {{$user->name}}</p>
         
                             <a href="/answerComment/{{$answerComent->id}}/edit" class="btn btn-sm btn-primary"><i
@@ -149,9 +158,12 @@
                                 <label for="content">Isi Komentar</label>
                                 <input type="text" name="answer_id" value="{{$answer->id}}" hidden>
                                 <input type="text" name="user_id" value="{{Auth::user()->id}}" hidden>
-                                <input type="text" class="form-control  @error('content') is-invalid @enderror "
-                                    id="content" name="content" placeholder="Masukan komentar dari Jawaban!">
-
+                                {{-- <input type="text" class="form-control  @error('content') is-invalid @enderror "
+                                    id="content" name="content" placeholder="Masukan komentar dari Jawaban!"> --}}
+                                <textarea type="text" class="form-control my-editor  @error('content') is-invalid @enderror "
+                                    id="content" name="content" placeholder="Masukan komentar dari jawaban!"
+                                    value="{{old('content')}}">{!! old('content') !!}</textarea>
+    
                                 @error('content')
                                 <div class="invalid-feedback">
                                     {{$message}}
@@ -184,8 +196,11 @@
                                     <label for="content">Isi Jawaban</label>
                                     <input type="text" name="question_id" value="{{$question->id}}" hidden>
                                     <input type="text" name="user_id" value="{{Auth::user()->id}}" hidden>
-                                    <input type="text" class="form-control  @error('content') is-invalid @enderror "
-                                        id="content" name="content" placeholder="Masukan jawaban kamu!">
+                                    {{-- <input type="text" class="form-control  @error('content') is-invalid @enderror "
+                                        id="content" name="content" placeholder="Masukan jawaban kamu!"> --}}
+                                    <textarea type="text" class="form-control my-editor  @error('content') is-invalid @enderror "
+                                        id="content" name="content" placeholder="Masukan jawaban kamu!"
+                                        value="{{old('content')}}">{!! old('content') !!}</textarea>
 
                                     @error('content')
                                     <div class="invalid-feedback">
@@ -207,7 +222,7 @@
             <div class="card-deck row m-0 justify-content-center shadow">
                 <div class="card-body">
 
-                    {{-- membat pertanyaan --}}
+                    {{-- membuat pertanyaan --}}
                     <h3>Buat Pertanyaan.</h3>
 
                     {{-- form --}}
@@ -217,6 +232,8 @@
                             <label for="judul">Judul Pertanyaan</label>
                             <input type="text" class=" @error('title') is-invalid @enderror form-control" id="title"
                                 name="title" placeholder="Masukan title Pertanyaan" value="{{old('title')}}">
+                            {{-- <textarea type="text" class=" @error('title') is-invalid @enderror form-control my-editor"
+                                id="title" name="title" placeholder="Masukan title Pertanyaan" value="{{old('title')}}">{!! old('title') !!}</textarea> --}}
                             @error('title')
                             <div class="invalid-feedback">
                                 {{$message}}
@@ -225,9 +242,9 @@
                         </div>
                         <div class="form-group">
                             <label for="content">Isi Pertanyaan</label>
-                            <textarea type="text" class="form-control  @error('content') is-invalid @enderror "
+                            <textarea type="text" class="form-control my-editor  @error('content') is-invalid @enderror "
                                 id="content" name="content" placeholder="Masukan Pertanyaan kamu!"
-                                value="{{old('content')}}"></textarea>
+                                value="{{old('content')}}">{!! old('content') !!}</textarea>
                             @error('content')
                             <div class="invalid-feedback">
                                 {{$message}}
@@ -243,3 +260,44 @@
     </div>
 </div>
 @endsection
+
+@push('scripts')
+
+<script>
+    var editor_config = {
+      path_absolute : "/",
+      selector: "textarea.my-editor",
+      plugins: [
+        "advlist autolink lists link image charmap print preview hr anchor pagebreak",
+        "searchreplace wordcount visualblocks visualchars code fullscreen",
+        "insertdatetime media nonbreaking save table contextmenu directionality",
+        "emoticons template paste textcolor colorpicker textpattern"
+      ],
+      toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image media",
+      relative_urls: false,
+      file_browser_callback : function(field_name, url, type, win) {
+        var x = window.innerWidth || document.documentElement.clientWidth || document.getElementsByTagName('body')[0].clientWidth;
+        var y = window.innerHeight|| document.documentElement.clientHeight|| document.getElementsByTagName('body')[0].clientHeight;
+  
+        var cmsURL = editor_config.path_absolute + 'laravel-filemanager?field_name=' + field_name;
+        if (type == 'image') {
+          cmsURL = cmsURL + "&type=Images";
+        } else {
+          cmsURL = cmsURL + "&type=Files";
+        }
+  
+        tinyMCE.activeEditor.windowManager.open({
+          file : cmsURL,
+          title : 'Filemanager',
+          width : x * 0.8,
+          height : y * 0.8,
+          resizable : "yes",
+          close_previous : "no"
+        });
+      }
+    };
+  
+    tinymce.init(editor_config);
+  </script>
+
+@endpush

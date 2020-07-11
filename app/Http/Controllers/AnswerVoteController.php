@@ -82,4 +82,8 @@ class AnswerVoteController extends Controller
     {
         //
     }
+    
+//     Usernya ( count_reputation) - PertanyaanVote ( up, down, pertanyaan_id, user_id)
+// tinggal count up*10 - down*1 = count_reputation
+
 }

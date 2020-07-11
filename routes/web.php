@@ -39,3 +39,7 @@ Route::post('/answerComment', 'AnswerCommentController@store');
 Route::delete('/answerComment/{answerComment}', 'AnswerCommentController@destroy');
 Route::get('/answerComment/{answerComment}/edit', 'AnswerCommentController@edit');
 Route::patch('/answerComment/{answerComment}', 'AnswerCommentController@update');
+
+Route::group(['prefix' => 'laravel-filemanager', 'middleware' => ['web', 'auth']], function () {
+    \UniSharp\LaravelFilemanager\Lfm::routes();
+});

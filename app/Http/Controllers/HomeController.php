@@ -38,7 +38,7 @@ class HomeController extends Controller
         
         // view
         $data = [
-            'title' => "Welcome To Larahub",
+            'title' => " ",  //"Welcome To Larahub"
             'questions' => $questions,
             'questComents' => $questComents,
             'answers' => $answers,
