@@ -12,10 +12,13 @@
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}"></script>
+<<<<<<< HEAD
     <script src="{{ asset('js/app.js') }}" defer></script>
     @stack('script-head')
 
   
+=======
+>>>>>>> 0a468f5d217c5634ec607235b5423cfd8e747fba
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
