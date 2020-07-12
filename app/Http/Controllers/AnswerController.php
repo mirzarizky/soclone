@@ -97,4 +97,13 @@ class AnswerController extends Controller
 
         return redirect('/home')->with('status', 'jawaban Dihapus!!');
     }
+
+    public function approved(Request $request, Answer $answer)
+    {
+        $answer->update([
+            'best_answer' => $request->best_answer
+        ]);
+
+        return redirect('/home')->with('status', 'Jawaban Terbaik Diatur!!');
+    }
 }

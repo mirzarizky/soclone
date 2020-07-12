@@ -42,13 +42,16 @@
                             {{-- untuk vote --}}
 
                             <div class="quantity">
-                                <input type="number" data-vote="question" data-id="{{$question->id}}" disabled min="1" max="100" step="1" value="{{ $question->vote_point() }}">
+                                <input type="number" data-vote="question" data-id="{{$question->id}}" disabled min="1"
+                                    max="100" step="1" value="{{ $question->vote_point() }}">
                             </div>
-                            <form id="vote-question-up-{{$question->id}}" action="{{ route('question.vote', $question) }}" method="post">
+                            <form id="vote-question-up-{{$question->id}}"
+                                action="{{ route('question.vote', $question) }}" method="post">
                                 @csrf
                                 <input type="hidden" name="vote" value="1">
                             </form>
-                            <form id="vote-question-down-{{$question->id}}" action="{{ route('question.vote', $question) }}" method="post">
+                            <form id="vote-question-down-{{$question->id}}"
+                                action="{{ route('question.vote', $question) }}" method="post">
                                 @csrf
                                 <input type="hidden" name="vote" value="0">
                             </form>
@@ -68,7 +71,7 @@
                             </h4>
                             <div class="my-2">
                                 @foreach ($question->tags as $tag)
-                                    <span class="bg-success px-2 py-1 rounded-sm text-white">{{$tag->name}}</span>
+                                <span class="bg-success px-2 py-1 rounded-sm text-white">{{$tag->name}}</span>
                                 @endforeach
                             </div>
                             <p>{{$question->content}}</p>
@@ -140,120 +143,113 @@
                     @foreach ($answers as $answer)
                     @if ($answer->question_id == $question->id)
                     <div class="quantity">
-                        <input type="number" data-vote="answer" data-id="{{$answer->id}}" disabled min="1" max="100" step="1" value="{{ $answer->vote_point() }}">
+                        <input type="number" data-vote="answer" data-id="{{$answer->id}}" disabled min="1" max="100"
+                            step="1" value="{{ $answer->vote_point() }}">
                     </div>
-                    <form id="vote-answer-up-{{$answer->id}}" action="{{ route('answer.vote', $answer) }}" method="post">
+                    <form id="vote-answer-up-{{$answer->id}}" action="{{ route('answer.vote', $answer) }}"
+                        method="post">
                         @csrf
                         <input type="hidden" name="vote" value="1">
                     </form>
-                    <form id="vote-answer-down-{{$answer->id}}" action="{{ route('answer.vote', $answer) }}" method="post">
+                    <form id="vote-answer-down-{{$answer->id}}" action="{{ route('answer.vote', $answer) }}"
+                        method="post">
                         @csrf
                         <input type="hidden" name="vote" value="0">
                     </form>
-                    <h5 class="text-right">{{$answer->content}} - at
-                        {{$question->created_at->format('D M Y')}} By @foreach ($users as $user)
-                        @if ($user->id == $answer->user_id)
-                        {{$user->name}}
-                        @endif
-                        @endforeach</p>
-                    </h5>
-                    @if ($answer->user_id == Auth::user()->id)
-                    <a href="/jawaban/{{$answer->id}}/edit" class="btn btn-sm btn-primary"><i
-                            class="far fa-edit"></i></a>
-                    <form action="/jawaban/{{$answer->id}}" method="POST" class="d-inline">
-                        <span>
-                            @method('delete')
-                            @csrf
-                            <button class="btn btn-sm btn-danger text-right"><i class="far fa-trash-alt"></i></button>
-                        </span>
-                    </form>
+                    @if ($answer->best_answer == 1)
+                    <h5 class="text-right text-primary">
+                        @else
+                        <h5 class="text-right">
+                            @endif
+                            {{$answer->content}} - at
+                            {{$question->created_at->format('D M Y')}} By @foreach ($users as $user)
+                            @if ($user->id == $answer->user_id)
+                            {{$user->name}}
+                            @if ($question->user_id == Auth::user()->id)<br>
+                            <form action="/jawaban/{{$answer->id}}/approved" method="post" class="d-inline">
+                                @method('patch')
+                                @csrf
+                                <input type="text" value="1" name="best_answer" hidden>
+                                <button class="btn" type="submit"><i class="far fa-check-circle"></i></button>
+                            </form>
+                            @if ($answer->best_answer == 1)
+                            <form action="/jawaban/{{$answer->id}}/approved" method="post" class="d-inline">
+                                @method('patch')
+                                @csrf
+                                <input type="text" value="0" name="best_answer" hidden>
+                                <button class="btn" type="submit"><i class="fa fa-times" aria-hidden="true"></i></button>
+                            </form>
+                            @endif
 
-                    @endif
+                            @else
+                            <i class="far fa-check-circle"></i>
+                            @endif
+                            @endif
+                            @endforeach</p>
+                        </h5>
 
-
-
-                    {{-- daftar komentar jawaban --}}
-
-
-                    <h6 class="text-right"><a data-toggle="collapse"
-                            data-target="#collapse_komentar_jawaban{{$answer->id}}" aria-expanded="false"
-                            aria-controls="collapse_komentar_jawaban{{$answer->id}}"><i
-                                class="btn btn-warning far fa-comment"></i></a> - Komentar Jawabannya -</h6>
-
-
-                    @foreach ($answerComents as $answerComent)
-                    @if ($answerComent->answer_id == $answer->id)
-                    <p class="text-muted text-right blockquote-footer">{{$answerComent->content}} - at
-                        {{$answerComent->created_at->format('D M Y')}} By @foreach ($users as $user)
-                        @if ($user->id == $answerComent->user_id)
-                        {{$user->name}}
-                        @endif
-                        @endforeach</p>
-
-                    @if ($answerComent->user_id == Auth::user()->id)
-                    <a href="/answerComment/{{$answerComent->id}}/edit" class="btn btn-sm btn-primary"><i
-                            class="far fa-edit"></i></a>
-                    <form action="/answerComment/{{$answerComent->id}}" method="POST" class="d-inline">
-                        <span>
-                            @method('delete')
-                            @csrf
-                            <button class="btn btn-sm btn-danger text-right"><i class="far fa-trash-alt"></i></button>
-                        </span>
-                    </form>
-                    @endif
-
-
-                    @endif
-                    @endforeach
-
-                    <div class="collapse text-right pb-3" id="collapse_komentar_jawaban{{$answer->id}}">
-
-                        {{-- form --}}
-                        <form method="POST" action="/answerComment">
-                            @csrf
-                            <div class="form-group">
-                                <label for="content">Isi Komentar</label>
-                                <input type="text" name="answer_id" value="{{$answer->id}}" hidden>
-                                <input type="text" name="user_id" value="{{Auth::user()->id}}" hidden>
-                                <input type="text" class="form-control  @error('content') is-invalid @enderror "
-                                    id="content" name="content" placeholder="Masukan komentar dari Jawaban!">
-
-                                @error('content')
-                                <div class="invalid-feedback">
-                                    {{$message}}
-                                </div>
-                                @enderror
-
-                            </div>
-                            <button type="submit" class="btn btn-primary btn-sm">Komentari Jawaban!</button>
+                        @if ($answer->user_id == Auth::user()->id)
+                        <a href="/jawaban/{{$answer->id}}/edit" class="btn btn-sm btn-primary"><i
+                                class="far fa-edit"></i></a>
+                        <form action="/jawaban/{{$answer->id}}" method="POST" class="d-inline">
+                            <span>
+                                @method('delete')
+                                @csrf
+                                <button class="btn btn-sm btn-danger text-right"><i
+                                        class="far fa-trash-alt"></i></button>
+                            </span>
                         </form>
-                    </div>
+
+                        @endif
 
 
-                    @endif
-                    @endforeach
+
+                        {{-- daftar komentar jawaban --}}
 
 
-                    {{-- membuat jawaban --}}
+                        <h6 class="text-right"><a data-toggle="collapse"
+                                data-target="#collapse_komentar_jawaban{{$answer->id}}" aria-expanded="false"
+                                aria-controls="collapse_komentar_jawaban{{$answer->id}}"><i
+                                    class="btn btn-warning far fa-comment"></i></a> - Komentar Jawabannya -</h6>
 
-                    <div class="text-right mt-3">
-                        <button class="btn btn-success btn-sm" type="button" data-toggle="collapse"
-                            data-target="#collapse{{$question->id}}" aria-expanded="false"
-                            aria-controls="collapse{{$question->id}}">
-                            Jawab Pertanyaan!
-                        </button>
-                        </p>
-                        <div class="collapse" id="collapse{{$question->id}}">
+
+                        @foreach ($answerComents as $answerComent)
+                        @if ($answerComent->answer_id == $answer->id)
+                        <p class="text-muted text-right blockquote-footer">{{$answerComent->content}} - at
+                            {{$answerComent->created_at->format('D M Y')}} By @foreach ($users as $user)
+                            @if ($user->id == $answerComent->user_id)
+                            {{$user->name}}
+                            @endif
+                            @endforeach</p>
+
+                        @if ($answerComent->user_id == Auth::user()->id)
+                        <a href="/answerComment/{{$answerComent->id}}/edit" class="btn btn-sm btn-primary"><i
+                                class="far fa-edit"></i></a>
+                        <form action="/answerComment/{{$answerComent->id}}" method="POST" class="d-inline">
+                            <span>
+                                @method('delete')
+                                @csrf
+                                <button class="btn btn-sm btn-danger text-right"><i
+                                        class="far fa-trash-alt"></i></button>
+                            </span>
+                        </form>
+                        @endif
+
+
+                        @endif
+                        @endforeach
+
+                        <div class="collapse text-right pb-3" id="collapse_komentar_jawaban{{$answer->id}}">
 
                             {{-- form --}}
-                            <form method="POST" action="/answer">
+                            <form method="POST" action="/answerComment">
                                 @csrf
                                 <div class="form-group">
-                                    <label for="content">Isi Jawaban</label>
-                                    <input type="text" name="question_id" value="{{$question->id}}" hidden>
+                                    <label for="content">Isi Komentar</label>
+                                    <input type="text" name="answer_id" value="{{$answer->id}}" hidden>
                                     <input type="text" name="user_id" value="{{Auth::user()->id}}" hidden>
                                     <input type="text" class="form-control  @error('content') is-invalid @enderror "
-                                        id="content" name="content" placeholder="Masukan jawaban kamu!">
+                                        id="content" name="content" placeholder="Masukan komentar dari Jawaban!">
 
                                     @error('content')
                                     <div class="invalid-feedback">
@@ -262,10 +258,47 @@
                                     @enderror
 
                                 </div>
-                                <button type="submit" class="btn btn-primary btn-sm">Jawab Pertanyaan!</button>
+                                <button type="submit" class="btn btn-primary btn-sm">Komentari Jawaban!</button>
                             </form>
                         </div>
-                    </div>
+
+
+                        @endif
+                        @endforeach
+
+
+                        {{-- membuat jawaban --}}
+
+                        <div class="text-right mt-3">
+                            <button class="btn btn-success btn-sm" type="button" data-toggle="collapse"
+                                data-target="#collapse{{$question->id}}" aria-expanded="false"
+                                aria-controls="collapse{{$question->id}}">
+                                Jawab Pertanyaan!
+                            </button>
+                            </p>
+                            <div class="collapse" id="collapse{{$question->id}}">
+
+                                {{-- form --}}
+                                <form method="POST" action="/answer">
+                                    @csrf
+                                    <div class="form-group">
+                                        <label for="content">Isi Jawaban</label>
+                                        <input type="text" name="question_id" value="{{$question->id}}" hidden>
+                                        <input type="text" name="user_id" value="{{Auth::user()->id}}" hidden>
+                                        <input type="text" class="form-control  @error('content') is-invalid @enderror "
+                                            id="content" name="content" placeholder="Masukan jawaban kamu!">
+
+                                        @error('content')
+                                        <div class="invalid-feedback">
+                                            {{$message}}
+                                        </div>
+                                        @enderror
+
+                                    </div>
+                                    <button type="submit" class="btn btn-primary btn-sm">Jawab Pertanyaan!</button>
+                                </form>
+                            </div>
+                        </div>
                 </div>
             </div>
             @endforeach
@@ -293,7 +326,8 @@
                         <div class="form-group">
                             <label for="content">Isi Pertanyaan</label>
                             <textarea type="text" class="form-control  @error('content') is-invalid @enderror "
-                                id="content" name="content" placeholder="Masukan Pertanyaan kamu!" required rows="3">{{old('content')}}</textarea>
+                                id="content" name="content" placeholder="Masukan Pertanyaan kamu!" required
+                                rows="3">{{old('content')}}</textarea>
                             @error('content')
                             <div class="invalid-feedback">
                                 {{$message}}
@@ -302,8 +336,10 @@
                         </div>
                         <div class="form-group">
                             <label for="content">Tag Pertanyaan</label>
-                            <textarea type="text" class="form-control @error('content') is-invalid @enderror"
-                                id="tag" name="tags" placeholder="Masukan Tag Pertanyaan kamu! (Pisahkan dengan spasi)" required>{{ old('tags') }}</textarea>
+                            <textarea type="text" class="form-control @error('content') is-invalid @enderror" id="tag"
+                                name="tags" placeholder="Masukan Tag Pertanyaan kamu!"
+                                required>{{ old('tags') }}</textarea>
+                            <small id="tags" class="form-text text-muted">*Pisahkan dengan spasi</small>
                             @error('tags')
                             <div class="invalid-feedback">
                                 {{$message}}
@@ -322,9 +358,10 @@
 
 @push('scripts')
 <script>
-    $(document).ready(function() {
-        $('<div class="quantity-nav"><div class="quantity-button quantity-up">+</div><div class="quantity-button quantity-down">-</div></div>').insertAfter('.quantity input');
-        $('.quantity').each(function() {
+    $(document).ready(function () {
+        $('<div class="quantity-nav"><div class="quantity-button quantity-up">+</div><div class="quantity-button quantity-down">-</div></div>')
+            .insertAfter('.quantity input');
+        $('.quantity').each(function () {
             var spinner = $(this),
                 input = spinner.find('input[type="number"]'),
                 btnUp = spinner.find('.quantity-up'),
@@ -333,18 +370,19 @@
                 max = input.attr('max');
 
 
-            btnUp.click(function() {
+            btnUp.click(function () {
                 var model = spinner.find('input').data('vote');
                 var modelId = spinner.find('input').data('id');
                 $(`#vote-${model}-up-${modelId}`).submit();
             });
 
-            btnDown.click(function() {
+            btnDown.click(function () {
                 var model = spinner.find('input').data('vote');
                 var modelId = spinner.find('input').data('id');
                 $(`#vote-${model}-down-${modelId}`).submit();
             });
         });
     })
+
 </script>
 @endpush

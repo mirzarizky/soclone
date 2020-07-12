@@ -8,6 +8,7 @@ use App\Question;
 use App\QuestionComment;
 use App\Answer;
 use App\AnswerComment;
+use App\BestAnswer;
 use App\user;
 
 class HomeController extends Controller
